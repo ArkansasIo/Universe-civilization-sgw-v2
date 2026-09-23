@@ -87,12 +87,14 @@ import { AdminSecurityAuditTab } from './admin/AdminSecurityAuditTab';
 import { AdminGlobalEventsTab } from './admin/AdminGlobalEventsTab';
 import { AdminMaintenanceTab } from './admin/AdminMaintenanceTab';
 import { AdminLoginPermissionsTab } from './admin/AdminLoginPermissionsTab';
+import { AdminSqlDatabaseTab } from './admin/AdminSqlDatabaseTab';
 import { AdminLoginModal } from '../modals/AdminLoginModal';
 import { getAdminAuthSession } from '../../config/adminAuthConfig';
 import { AdminAuthSession } from '../../types';
 
 export type AdminTabType =
   | 'admin-login'
+  | 'sql-database'
   | 'crown'
   | 'universe'
   | 'users'
@@ -430,6 +432,23 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
             <span>🔐 Admin Login & Permissions</span>
           </button>
 
+          {/* 0.5. SQL Database Terminal */}
+          <button
+            type="button"
+            onClick={() => {
+              sound.play('click');
+              setActiveTab('sql-database');
+            }}
+            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
+              activeTab === 'sql-database'
+                ? 'bg-[#111111] text-white shadow'
+                : 'bg-white text-[#555555] hover:bg-[#f5f5f5] hover:text-[#111111] border border-[#dedede]'
+            }`}
+          >
+            <Database size={14} className={activeTab === 'sql-database' ? 'text-emerald-400' : 'text-emerald-600'} />
+            <span>🗄️ SQL Database Terminal</span>
+          </button>
+
           {/* 1. Crown */}
           <button
             type="button"
@@ -747,6 +766,10 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
           currentSession={adminSession}
           onUpdateSession={(sess) => setAdminSession(sess)}
         />
+      )}
+
+      {activeTab === 'sql-database' && (
+        <AdminSqlDatabaseTab currentSession={adminSession} />
       )}
 
       {activeTab === 'universe' && (
