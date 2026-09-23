@@ -37,7 +37,6 @@ const NAV_SECTIONS: NavSection[] = [
       { id: 'player-profile', label: 'Player Profile & Dossier' },
       { id: 'store-battlepass', label: 'Store & Battle Pass' },
       { id: 'codex-doc', label: 'Strategy Codex & GDD' },
-      { id: 'db-theme-manager', label: '🎨 Themes & SQL Database' },
       { id: 'resources', label: 'Resources' },
       { id: 'income', label: 'Income' },
       { id: 'military-stats', label: 'Military Scores' },

@@ -158,7 +158,6 @@ import { DiplomacyView } from './components/views/DiplomacyView';
 import { MissionsView } from './components/views/MissionsView';
 import { GalacticNewsView } from './components/views/GalacticNewsView';
 import { CodexDocumentationView } from './components/views/CodexDocumentationView';
-import { DatabaseThemeManagerView } from './components/views/DatabaseThemeManagerView';
 import { applyThemeToDOM, getActiveThemeId } from './config/themeConfig';
 import { AICSystemView } from './components/views/AICSystemView';
 import { MasterUpgradesView } from './components/views/MasterUpgradesView';
@@ -3251,10 +3250,6 @@ export default function App() {
 
             {activeRoute === 'codex-doc' && (
               <CodexDocumentationView />
-            )}
-
-            {activeRoute === 'db-theme-manager' && (
-              <DatabaseThemeManagerView />
             )}
           </div>
         </main>
