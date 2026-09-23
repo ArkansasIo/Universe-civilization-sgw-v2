@@ -21,6 +21,7 @@ import {
   INITIAL_PROFILE_SLOTS,
   INITIAL_CAREER_STATS,
 } from '../../accountProfilesData';
+import { CANONICAL_ADMIN_ACCOUNTS } from '../../config/adminAuthConfig';
 
 interface AccountProfilesViewProps {
   profile: PlayerProfile;
@@ -527,6 +528,40 @@ export const AccountProfilesView: React.FC<AccountProfilesViewProps> = ({
                 >
                   {vacationMode ? 'Active (Protected)' : 'Inactive'}
                 </button>
+              </div>
+            </div>
+
+            {/* Restricted Admin Only Account Login Details Vault */}
+            <div className="border border-slate-800 bg-slate-900 p-5 text-slate-100 font-mono text-xs space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="font-bold text-amber-400 uppercase flex items-center gap-1.5">
+                  <Shield size={16} /> Restricted Admin-Only Accounts Vault
+                </span>
+                <span className="text-[10px] text-slate-400">Clearance: Root Admin</span>
+              </div>
+
+              <p className="text-[11px] text-slate-300 leading-relaxed">
+                Registered system administrator login codes, passcodes, and security clearance permissions:
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
+                {CANONICAL_ADMIN_ACCOUNTS.map((acc) => (
+                  <div key={acc.id} className="p-3 bg-slate-950 border border-slate-800 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <strong className="text-white font-bold">{acc.username}</strong>
+                      <span className="px-1.5 py-0.2 bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] uppercase font-bold">
+                        {acc.role}
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-slate-400">Title: {acc.title}</div>
+                    <div className="text-[10px] text-slate-300">
+                      Login Code: <code className="text-sky-300 font-bold">{acc.loginCode}</code> | Passcode: <code className="text-emerald-300 font-bold">{acc.passcode}</code>
+                    </div>
+                    <div className="text-[10px] text-slate-400">
+                      PIN: <code className="text-amber-300">{acc.securityPin}</code> | {acc.permissions.length} Permissions
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 

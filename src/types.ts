@@ -565,8 +565,40 @@ export interface OGameUniverseConfig {
   debrisRecycleSpeed: number;
 }
 
-export type AdminUserRole = 'player' | 'moderator' | 'operator' | 'administrator';
+export type AdminUserRole = 'player' | 'moderator' | 'operator' | 'administrator' | 'super_admin';
 export type AdminUserStatus = 'active' | 'vacation' | 'banned' | 'inactive';
+
+export type AdminPermission =
+  | 'GRANT_RESOURCES'
+  | 'MANAGE_USERS'
+  | 'BAN_PLAYERS'
+  | 'MODIFY_UNIVERSE_CONFIG'
+  | 'EXECUTE_SQL'
+  | 'ISSUE_DECREES'
+  | 'MANAGE_FLEETS'
+  | 'PURGE_SYSTEM_DATA'
+  | 'MODERATE_TICKETS'
+  | 'MANAGE_EVENTS';
+
+export interface AdminCredentialAccount {
+  id: string;
+  username: string;
+  email: string;
+  loginCode: string;
+  passcode: string;
+  securityPin: string;
+  role: AdminUserRole;
+  title: string;
+  permissions: AdminPermission[];
+  lastLoginAt?: string;
+}
+
+export interface AdminAuthSession {
+  isAuthenticated: boolean;
+  activeAdmin: AdminCredentialAccount | null;
+  authenticatedAt: string | null;
+  securityClearanceLevel: number;
+}
 
 export interface AdminUserAccount {
   id: string;
@@ -591,6 +623,7 @@ export interface AdminUserAccount {
   homeCoords: string;
   vacationUntil?: string | null;
   banReason?: string | null;
+  permissions?: AdminPermission[];
 }
 
 export type AdminBanType = 'full_ban' | 'attack_lock' | 'chat_mute' | 'vacation_lock' | 'ip_ban';

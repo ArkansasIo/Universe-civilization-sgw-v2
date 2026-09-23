@@ -39,6 +39,7 @@ import {
   Moon,
   MessageSquare,
   ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import { sound } from '../../sound';
 import {
@@ -85,8 +86,13 @@ import { AdminTicketsTab } from './admin/AdminTicketsTab';
 import { AdminSecurityAuditTab } from './admin/AdminSecurityAuditTab';
 import { AdminGlobalEventsTab } from './admin/AdminGlobalEventsTab';
 import { AdminMaintenanceTab } from './admin/AdminMaintenanceTab';
+import { AdminLoginPermissionsTab } from './admin/AdminLoginPermissionsTab';
+import { AdminLoginModal } from '../modals/AdminLoginModal';
+import { getAdminAuthSession } from '../../config/adminAuthConfig';
+import { AdminAuthSession } from '../../types';
 
 export type AdminTabType =
+  | 'admin-login'
   | 'crown'
   | 'universe'
   | 'users'
@@ -247,6 +253,8 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
   onResetUniverseSeason = () => {},
 }) => {
   const [activeTab, setActiveTab] = useState<AdminTabType>(initialTab);
+  const [adminSession, setAdminSession] = useState<AdminAuthSession>(getAdminAuthSession);
+  const [showAdminLoginModal, setShowAdminLoginModal] = useState<boolean>(false);
   const [banPromptUser, setBanPromptUser] = useState<AdminUserAccount | null>(null);
   const [broadcastInput, setBroadcastInput] = useState(serverSettings.globalBroadcastMessage);
   const [importJson, setImportJson] = useState('');
@@ -339,6 +347,24 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
 
           {/* Quick Status Badges */}
           <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => {
+                sound.play('click');
+                setShowAdminLoginModal(true);
+              }}
+              className="px-3 py-2 border border-amber-500/50 bg-slate-900 text-slate-100 hover:bg-slate-800 transition-all flex items-center gap-2 font-mono cursor-pointer"
+            >
+              <ShieldAlert size={16} className="text-amber-400 animate-pulse" />
+              <div className="text-left">
+                <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                  Admin Session ({adminSession.activeAdmin?.role.toUpperCase() || 'NONE'})
+                </div>
+                <div className="text-xs font-bold text-amber-300">
+                  {adminSession.activeAdmin?.username || 'Authenticate Portal'}
+                </div>
+              </div>
+            </button>
+
             <div className="px-3 py-2 border border-[#dedede] bg-[#fafafa] flex items-center gap-2">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse" />
               <div>
@@ -387,6 +413,23 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
 
         {/* Admin Navigation Tabs */}
         <div className="mt-6 flex flex-wrap gap-1 border-b border-[#dedede] pb-2">
+          {/* 0. Admin Login & Permissions Matrix */}
+          <button
+            type="button"
+            onClick={() => {
+              sound.play('click');
+              setActiveTab('admin-login');
+            }}
+            className={`flex items-center gap-1.5 px-3 py-2 text-xs font-mono font-bold transition-all cursor-pointer ${
+              activeTab === 'admin-login'
+                ? 'bg-[#111111] text-white shadow'
+                : 'bg-white text-[#555555] hover:bg-[#f5f5f5] hover:text-[#111111] border border-[#dedede]'
+            }`}
+          >
+            <ShieldCheck size={14} className={activeTab === 'admin-login' ? 'text-emerald-400' : 'text-emerald-600'} />
+            <span>🔐 Admin Login & Permissions</span>
+          </button>
+
           {/* 1. Crown */}
           <button
             type="button"
@@ -699,6 +742,13 @@ export const AdminControlPanelView: React.FC<AdminControlPanelViewProps> = ({
       {/* ========================================================================= */}
       {/* OGAME CLONE ADMIN TABS                                                    */}
       {/* ========================================================================= */}
+      {activeTab === 'admin-login' && (
+        <AdminLoginPermissionsTab
+          currentSession={adminSession}
+          onUpdateSession={(sess) => setAdminSession(sess)}
+        />
+      )}
+
       {activeTab === 'universe' && (
         <AdminUniverseConfigTab
           universeConfig={universeConfig}
@@ -1853,6 +1903,16 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
           </div>
         </div>
       )}
+
+      {/* Admin Account Login Portal Modal */}
+      <AdminLoginModal
+        isOpen={showAdminLoginModal}
+        onClose={() => setShowAdminLoginModal(false)}
+        onAuthSuccess={(sess) => {
+          setAdminSession(sess);
+          setShowAdminLoginModal(false);
+        }}
+      />
     </div>
   );
 };
