@@ -614,6 +614,15 @@ export const PlanetsView: React.FC<PlanetsViewProps> = ({
 
           {/* Quick World Switcher & Homeworld Dropdown */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <button
+              onClick={() => onNavigate && onNavigate('planetary-invasion')}
+              className="px-3.5 py-2 bg-[#111111] text-white hover:bg-cyan-700 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+              title="Open the 1-999,999 OGame Galaxy Stargate Dial & Colony Conquest Hub"
+            >
+              <Globe className="w-4 h-4 text-cyan-400" />
+              <span>1-999,999 OGame Colony Hub</span>
+            </button>
+
             {/* Homeworld Dropdown Menu */}
             <div className="flex items-center gap-1.5 p-1.5 bg-[#fafafa] border border-[#dedede] text-xs font-mono">
               <span className="text-[10px] font-bold text-[#777777] uppercase flex items-center gap-1">

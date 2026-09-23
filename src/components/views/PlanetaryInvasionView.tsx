@@ -80,6 +80,13 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
   const [dialInput, setDialInput] = useState<string>('10');
   const [activeTab, setActiveTab] = useState<ConquestTab>('browser');
 
+  const [ogameCoord, setOgameCoord] = useState<{ universe: number; galaxy: number; system: number; slot: number }>({
+    universe: 1,
+    galaxy: 1,
+    system: 1,
+    slot: 10,
+  });
+
   // Combat Inputs & Status
   const [deployedTroops, setDeployedTroops] = useState<string>('30000');
   const [tacticalFeedback, setTacticalFeedback] = useState<{
@@ -466,6 +473,115 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
     });
   };
 
+  // Peaceful OGame Colony Ship Expedition
+  const handlePeacefulColonyExpedition = () => {
+    if (isConquered) {
+      sound.play('warning');
+      setTacticalFeedback({
+        type: 'info',
+        title: 'Already Colonized',
+        details: `${activePlanet.name} is already an active colony world in your empire!`,
+      });
+      return;
+    }
+
+    const nqCost = 50000;
+    const metalCost = 30000;
+    const crystalCost = 20000;
+
+    if (resources.naquadah < nqCost || (resources.metal || 0) < metalCost || (resources.crystal || 0) < crystalCost) {
+      sound.play('warning');
+      setTacticalFeedback({
+        type: 'danger',
+        title: 'Insufficient Colony Expedition Resources',
+        details: `Dispatching an OGame Colony Ship to ${activePlanet.name} requires ${nqCost.toLocaleString()} Naquadah, ${metalCost.toLocaleString()} Metal, and ${crystalCost.toLocaleString()} Crystal.`,
+      });
+      return;
+    }
+
+    if (resources.attackTurns < 2) {
+      sound.play('warning');
+      setTacticalFeedback({
+        type: 'danger',
+        title: 'Insufficient Colonization Turns',
+        details: 'Dispatching an OGame Colony Ship requires at least 2 Turns.',
+      });
+      return;
+    }
+
+    sound.play('confirm');
+
+    onUpdateResources({
+      attackTurns: Math.max(0, resources.attackTurns - 2),
+      naquadah: resources.naquadah - nqCost,
+      metal: Math.max(0, (resources.metal || 0) - metalCost),
+      crystal: Math.max(0, (resources.crystal || 0) - crystalCost),
+    });
+
+    if (profile && onUpdateProfile) {
+      onUpdateProfile({
+        glory: (profile.glory || 0) + 15,
+      });
+    }
+
+    const newRecord: ConqueredPlanetRecord = {
+      id: activePlanet.id,
+      conqueredTimestamp: Date.now(),
+      customName: `${activePlanet.name} (Colony)`,
+      infrastructure: {
+        refineryLevel: 1,
+        shieldGridLevel: 1,
+        garrisonCitadelLevel: 1,
+        orbitalDrydockLevel: 1,
+        geothermalTapLevel: 1,
+        stargateNexusLevel: 1,
+      },
+      stationedGarrison: 15000,
+      taxPolicy: 'balanced',
+      accumulatedTribute: {
+        naquadah: Math.round(activePlanet.yield.naquadahPerHour * 2),
+        metal: Math.round(activePlanet.yield.metalPerHour * 2),
+        crystal: Math.round(activePlanet.yield.crystalPerHour * 2),
+        deuterium: Math.round(activePlanet.yield.deuteriumPerHour * 2),
+        glory: 10,
+      },
+      lastCollectedAt: Date.now(),
+    };
+
+    setConqueredMap((prev) => ({ ...prev, [activePlanet.id]: newRecord }));
+
+    setTacticalFeedback({
+      type: 'success',
+      title: `COLONY SHIP LANDED ON ${activePlanet.name}!`,
+      details: `Your OGame Colony Ship established a new sovereign colonial settlement at ${activePlanet.coordinate}. Industrial refineries and defense shields are online!`,
+    });
+  };
+
+  // Quick Auto-Colonize Next Unclaimed World
+  const handleAutoColonizeNextFrontier = () => {
+    let nextId = currentPlanetId;
+    while (conqueredMap[nextId] && nextId < 999999) {
+      nextId++;
+    }
+    if (nextId >= 999999 && conqueredMap[nextId]) {
+      sound.play('warning');
+      setTacticalFeedback({
+        type: 'info',
+        title: 'Frontier Saturated',
+        details: 'You have colonized every tested world in this sector!',
+      });
+      return;
+    }
+
+    handleDialPlanet(nextId);
+    sound.play('click');
+    setTacticalFeedback({
+      type: 'info',
+      title: `FRONTIER SCOUTING COMPLETE`,
+      details: `Targeting next uncolonized world: Planet #${nextId}. Click 'Dispatch OGame Colony Ship' or 'Launch Invasion' to claim it!`,
+    });
+  };
+
   // Collect All Imperial Tribute
   const handleCollectAllTribute = () => {
     if (
@@ -742,6 +858,91 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
       {/* ===================== TAB 1: STARGATE DIAL & PLANETARY BROWSER ===================== */}
       {activeTab === 'browser' && (
         <div className="space-y-6">
+          {/* OGame Universe Coordinate Selector Grid */}
+          <div className="p-4 bg-[#f6f8fa] border border-[#dedede] flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-[#111]">
+              <Globe className="w-4 h-4 text-cyan-600" />
+              <span>OGame Galaxy Coordinates Jump</span>
+              <span className="text-[10px] text-[#777] font-normal">[Universe : Galaxy : System : Slot]</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 font-mono">
+              {/* Universe */}
+              <div className="flex items-center gap-1 bg-white px-2 py-1 border border-[#ccc]">
+                <span className="text-[10px] text-[#777] font-bold">UNI:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={ogameCoord.universe}
+                  onChange={(e) => {
+                    const u = Math.max(1, Math.min(30, parseInt(e.target.value) || 1));
+                    setOgameCoord((prev) => ({ ...prev, universe: u }));
+                  }}
+                  className="w-8 text-xs font-bold text-center border-none focus:outline-none"
+                />
+              </div>
+
+              {/* Galaxy */}
+              <div className="flex items-center gap-1 bg-white px-2 py-1 border border-[#ccc]">
+                <span className="text-[10px] text-[#777] font-bold">GAL:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={90}
+                  value={ogameCoord.galaxy}
+                  onChange={(e) => {
+                    const g = Math.max(1, Math.min(90, parseInt(e.target.value) || 1));
+                    setOgameCoord((prev) => ({ ...prev, galaxy: g }));
+                  }}
+                  className="w-10 text-xs font-bold text-center border-none focus:outline-none"
+                />
+              </div>
+
+              {/* System */}
+              <div className="flex items-center gap-1 bg-white px-2 py-1 border border-[#ccc]">
+                <span className="text-[10px] text-[#777] font-bold">SYS:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={999}
+                  value={ogameCoord.system}
+                  onChange={(e) => {
+                    const s = Math.max(1, Math.min(999, parseInt(e.target.value) || 1));
+                    setOgameCoord((prev) => ({ ...prev, system: s }));
+                  }}
+                  className="w-12 text-xs font-bold text-center border-none focus:outline-none"
+                />
+              </div>
+
+              {/* Slot */}
+              <div className="flex items-center gap-1 bg-white px-2 py-1 border border-[#ccc]">
+                <span className="text-[10px] text-[#777] font-bold">SLOT:</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={15}
+                  value={ogameCoord.slot}
+                  onChange={(e) => {
+                    const sl = Math.max(1, Math.min(15, parseInt(e.target.value) || 1));
+                    setOgameCoord((prev) => ({ ...prev, slot: sl }));
+                  }}
+                  className="w-8 text-xs font-bold text-center border-none focus:outline-none"
+                />
+              </div>
+
+              <button
+                onClick={() => {
+                  const computedId = ((ogameCoord.system - 1) * 90 + (ogameCoord.galaxy - 1)) % 999999 + 1;
+                  handleDialPlanet(computedId);
+                }}
+                className="px-3 py-1.5 bg-cyan-700 text-white font-sans text-xs font-bold uppercase tracking-wider hover:bg-cyan-800 cursor-pointer"
+              >
+                Jump Coordinate
+              </button>
+            </div>
+          </div>
+
           {/* Stargate Dialing Bar */}
           <div className="border border-[#dedede] bg-white p-5">
             <div className="text-[10px] font-bold text-[#777777] uppercase tracking-wider mb-2 flex items-center gap-1.5">
@@ -882,15 +1083,35 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full lg:w-auto">
                 {!isConquered ? (
-                  <button
-                    onClick={() => { sound.play('click'); setActiveTab('combat'); }}
-                    className="px-5 py-3 bg-[#dc2626] text-white text-xs font-bold uppercase tracking-wider hover:bg-rose-700 flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-                  >
-                    <Swords className="w-4 h-4" />
-                    Launch Invasion
-                  </button>
+                  <>
+                    <button
+                      onClick={handlePeacefulColonyExpedition}
+                      className="px-4 py-2.5 bg-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-700 flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                      title="Establish a peaceful OGame Colony World using 50k NQ, 30k Metal, 20k Crystal & 2 Turns"
+                    >
+                      <Sparkles className="w-4 h-4 text-cyan-300" />
+                      🚀 Dispatch OGame Colony Ship
+                    </button>
+
+                    <button
+                      onClick={() => { sound.play('click'); setActiveTab('combat'); }}
+                      className="px-4 py-2.5 bg-[#dc2626] text-white text-xs font-bold uppercase tracking-wider hover:bg-rose-700 flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                    >
+                      <Swords className="w-4 h-4" />
+                      Launch Invasion
+                    </button>
+
+                    <button
+                      onClick={handleAutoColonizeNextFrontier}
+                      className="px-3 py-2.5 bg-[#f0f0f0] border border-[#ccc] text-[#333] hover:bg-[#e0e0e0] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer"
+                      title="Auto-scan ahead to find the next uncolonized world"
+                    >
+                      <Compass className="w-3.5 h-3.5 text-blue-600" />
+                      Find Next Frontier
+                    </button>
+                  </>
                 ) : (
                   <button
                     onClick={() => { sound.play('click'); setActiveTab('infrastructure'); }}
@@ -1061,13 +1282,36 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
             </div>
 
             {/* Preparation Strategies */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              {/* Option 1: Orbital Bombardment */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {/* Option 1: Peaceful OGame Colony Ship */}
+              <div className="p-4 border border-[#dedede] bg-[#fafafa] flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-blue-600" />
+                    <h3 className="font-bold text-xs uppercase text-[#111]">1. OGame Colony Ship Dispatch</h3>
+                  </div>
+                  <p className="text-[11px] text-[#666] leading-relaxed mb-3">
+                    Send an automated Colony Ship expedition to land peacefully on this coordinate and establish an immediate industrial colony settlement.
+                  </p>
+                </div>
+                <div className="border-t border-[#e8e8e8] pt-2 flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-[#888]">Cost: 50k NQ, 30k Metal, 20k Crystal & 2 Turns</span>
+                  <button
+                    onClick={handlePeacefulColonyExpedition}
+                    disabled={isConquered}
+                    className="px-3 py-1.5 bg-blue-600 text-white text-[11px] font-bold uppercase hover:bg-blue-700 disabled:opacity-40 cursor-pointer"
+                  >
+                    Land Colony Ship
+                  </button>
+                </div>
+              </div>
+
+              {/* Option 2: Orbital Bombardment */}
               <div className="p-4 border border-[#dedede] bg-[#fafafa] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Flame className="w-4 h-4 text-orange-600" />
-                    <h3 className="font-bold text-xs uppercase text-[#111]">1. Orbital Heavy Lance Strike</h3>
+                    <h3 className="font-bold text-xs uppercase text-[#111]">2. Orbital Lance Strike</h3>
                   </div>
                   <p className="text-[11px] text-[#666] leading-relaxed mb-3">
                     Fire spinal flagship lances from orbit to vaporize surface defenses and reduce enemy garrison strength by 25%.
@@ -1085,12 +1329,12 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
                 </div>
               </div>
 
-              {/* Option 2: Stargate Covert Infiltration */}
+              {/* Option 3: Stargate Covert Infiltration */}
               <div className="p-4 border border-[#dedede] bg-[#fafafa] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Crosshair className="w-4 h-4 text-cyan-600" />
-                    <h3 className="font-bold text-xs uppercase text-[#111]">2. Stargate Black-Ops Sabotage</h3>
+                    <h3 className="font-bold text-xs uppercase text-[#111]">3. Stargate Sabotage</h3>
                   </div>
                   <p className="text-[11px] text-[#666] leading-relaxed mb-3">
                     Infiltrate through the Stargate with stealth cloaked operatives to disable planetary shield generators (-30% Defense).
@@ -1108,12 +1352,12 @@ export const PlanetaryInvasionView: React.FC<PlanetaryInvasionViewProps> = ({
                 </div>
               </div>
 
-              {/* Option 3: Diplomatic Annexation */}
+              {/* Option 4: Diplomatic Annexation */}
               <div className="p-4 border border-[#dedede] bg-[#fafafa] flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <Crown className="w-4 h-4 text-purple-600" />
-                    <h3 className="font-bold text-xs uppercase text-[#111]">3. Diplomatic Annexation</h3>
+                    <h3 className="font-bold text-xs uppercase text-[#111]">4. Diplomatic Annexation</h3>
                   </div>
                   <p className="text-[11px] text-[#666] leading-relaxed mb-3">
                     Offer generous imperial protectorate status and annex the world peacefully without troop casualties.
