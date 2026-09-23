@@ -139,6 +139,7 @@ import { EveBlueprintsView } from './components/views/EveBlueprintsView';
 import { NMSUniverseView } from './components/views/NMSUniverseView';
 import { UnitRoster90View } from './components/views/UnitRoster90View';
 import { StargateNetworkView } from './components/views/StargateNetworkView';
+import { StargateRelicsView } from './components/views/stargate/StargateRelicsView';
 import { TurnSystemView } from './components/views/TurnSystemView';
 import { PlanetaryInvasionView } from './components/views/PlanetaryInvasionView';
 import { StoreBattlePassView } from './components/views/StoreBattlePassView';
@@ -2984,6 +2985,16 @@ export default function App() {
                 resources={resources}
                 onUpdateResources={(res) => setResources((prev) => ({ ...prev, ...res }))}
                 profile={profile}
+                onUpdateProfile={(updates) => setProfile((prev) => ({ ...prev, ...updates }))}
+                onNavigate={setActiveRoute}
+              />
+            )}
+
+            {activeRoute === 'stargate-relics' && (
+              <StargateRelicsView
+                resources={resources}
+                profile={profile}
+                onUpdateResources={(res) => setResources((prev) => ({ ...prev, ...res }))}
                 onUpdateProfile={(updates) => setProfile((prev) => ({ ...prev, ...updates }))}
                 onNavigate={setActiveRoute}
               />

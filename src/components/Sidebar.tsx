@@ -103,6 +103,7 @@ const NAV_SECTIONS: NavSection[] = [
       { id: 'shipyard', label: 'Orbital Shipyard' },
       { id: 'nms-universe', label: 'NMS Procedural Universe' },
       { id: 'stargate-network', label: 'Stargate & Jump Gates' },
+      { id: 'stargate-relics', label: '🏺 Stargate Relics & Artifacts' },
       { id: 'stargate-system-lords', label: '👑 Stargate System Lords & PvE Raids' },
       { id: 'stargate-npc-races', label: '27 Stargate Alien Races' },
       { id: 'hyperspace-systems', label: 'Hyperspace & Motherships' },

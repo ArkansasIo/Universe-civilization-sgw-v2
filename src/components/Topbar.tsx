@@ -94,6 +94,7 @@ const ROUTE_LABELS: Record<string, { section: string; title: string }> = {
   megastructures: { section: 'STELLAR ENGINEERING', title: 'Stellar Megastructure Projects' },
   'nms-universe': { section: 'DEEP SPACE MISSIONS', title: "No Man's Sky Procedural Universe" },
   'stargate-network': { section: 'DEEP SPACE MISSIONS', title: 'Stargate & Interstellar Jump Gates' },
+  'stargate-relics': { section: 'DEEP SPACE MISSIONS', title: 'Stargate Relics & TV/Movie Artifact Citadel' },
   'spy-log': { section: 'INTELLIGENCE BUREAU', title: 'Covert Missions History' },
   'enemy-intelligence': { section: 'INTELLIGENCE BUREAU', title: 'Enemy Intel Reports' },
   'resource-exchange': { section: 'COMMERCE & LOGISTICS', title: 'Resource Market' },

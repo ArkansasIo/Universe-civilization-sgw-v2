@@ -122,9 +122,27 @@ export const StargateAddressDirectory: React.FC<StargateAddressDirectoryProps> =
         onIncrementStargateCount();
       }
 
+      // Award Stargate Relic Fragment / Shard
+      if (connectedGate.lootEstimates.rareArtifact) {
+        try {
+          const savedRelics = localStorage.getItem('uc_stargate_relics_vault');
+          if (savedRelics) {
+            const parsed = JSON.parse(savedRelics);
+            const updated = parsed.map((r: any) =>
+              r.id === 'relic_dakara_transmuter_shard'
+                ? { ...r, quantityOwned: (r.quantityOwned || 0) + 1 }
+                : r
+            );
+            localStorage.setItem('uc_stargate_relics_vault', JSON.stringify(updated));
+          }
+        } catch (e) {
+          console.error('Failed to update Stargate relic vault', e);
+        }
+      }
+
       sound.play('success');
       const artifactMsg = connectedGate.lootEstimates.rareArtifact
-        ? ` Secured artifact: [${connectedGate.lootEstimates.rareArtifact}]!`
+        ? ` Secured Stargate Artifact Fragment: [${connectedGate.lootEstimates.rareArtifact}] & +1 Dakara Transmuter Fragment!`
         : '';
       onLogDebrief(
         `Mission Accomplished: ${selectedTeam.code} (${selectedTeam.leader}) returned through the gate from ${connectedGate.name}! Recovered ${lootNaq.toLocaleString()} Naquadah, ${lootCryst.toLocaleString()} Crystal, and ${lootDm} Dark Matter.${artifactMsg}`
