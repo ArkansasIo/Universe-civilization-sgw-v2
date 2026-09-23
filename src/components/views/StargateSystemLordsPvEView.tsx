@@ -38,7 +38,20 @@ export const StargateSystemLordsPvEView: React.FC<StargateSystemLordsPvEViewProp
 }) => {
   const [activeTab, setActiveTab] = useState<'system_lords' | 'pve_factions' | 'sarcophagus' | 'jaffa_rebellion'>('system_lords');
   const [selectedLord, setSelectedLord] = useState<SystemLordEntry>(STARGATE_SYSTEM_LORDS[0]);
-  const [selectedFaction, setSelectedFaction] = useState<StargateNpcRace>(STARGATE_NPC_RACES[18]); // Lucian Alliance
+  const PVE_ENEMY_IDS = [
+    'npc_lucian_alliance',
+    'npc_kull_warriors',
+    'npc_aschen_confederation',
+    'npc_genii_confederacy',
+    'npc_urgo_entities',
+    'npc_humanform_replicators',
+    'npc_trust_rogue_nid',
+    'npc_adria_ori_crusade',
+    'npc_system_lord_council',
+  ];
+
+  const newEnemyFactions = STARGATE_NPC_RACES.filter((race) => PVE_ENEMY_IDS.includes(race.id));
+  const [selectedFaction, setSelectedFaction] = useState<StargateNpcRace>(newEnemyFactions[0] || STARGATE_NPC_RACES[0]);
   const [isSimulatingBattle, setIsSimulatingBattle] = useState<boolean>(false);
   const [lastBattleReport, setLastBattleReport] = useState<BattleReport | null>(null);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
@@ -50,9 +63,6 @@ export const StargateSystemLordsPvEView: React.FC<StargateSystemLordsPvEViewProp
   // Jaffa Rebel Network State
   const [jaffaRebelLoyalty, setJaffaRebelLoyalty] = useState<number>(85);
   const [shieldSabotaged, setShieldSabotaged] = useState<boolean>(false);
-
-  // Filter new 9 Stargate NPC races (Indices 18 to 26 in STARGATE_NPC_RACES)
-  const newEnemyFactions = STARGATE_NPC_RACES.slice(18);
 
   // Execute System Lord Battle
   const handleChallengeSystemLord = (lord: SystemLordEntry) => {

@@ -131,7 +131,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { id: 'spy-log', label: 'Spy Log' },
       { id: 'enemy-intelligence', label: 'Enemy Intelligence' },
-      { id: 'stargate-npc-races', label: '18 Stargate Alien Races' },
+      { id: 'intel-codex', label: 'Strategic Intel Codex' },
     ],
   },
   {
@@ -162,7 +162,6 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'Planets',
     icon: '○',
     items: [
-      { id: 'planetary-invasion', label: '1-999,999 Planets Conquest' },
       { id: 'planet-list', label: 'Colonial World Nexus' },
       { id: 'life-support', label: '🌾 Food & Water Systems' },
       { id: 'population', label: '👥 Population & Rationing' },
@@ -214,8 +213,7 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'Account & Heritage',
     icon: '◌',
     items: [
-      { id: 'player-profile', label: 'Player Profile & Dossier' },
-      { id: 'commander-hq', label: 'Commander HQ & Staff' },
+      { id: 'account-profiles', label: 'Multi-Account Profiles' },
       { id: 'race', label: 'Race & Faction' },
       { id: 'vacation', label: 'Sanctuary Shield' },
       { id: 'ascension', label: 'Ascension' },
