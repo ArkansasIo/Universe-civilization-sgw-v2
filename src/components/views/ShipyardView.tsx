@@ -768,17 +768,17 @@ export const ShipyardView: React.FC<ShipyardViewProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold text-[#666666] mr-1">Filter:</span>
             {[
-              { id: 'all', label: 'All Presets' },
-              { id: 'attack', label: '⚔ Attack Armadas' },
-              { id: 'expedition', label: '🌌 Expedition Vanguards' },
-              { id: 'custom', label: '★ Custom Saved' },
+              { id: 'preset_all', label: 'All Presets' },
+              { id: 'preset_attack', label: '⚔ Attack Armadas' },
+              { id: 'preset_expedition', label: '🌌 Expedition Vanguards' },
+              { id: 'preset_custom', label: '★ Custom Saved' },
             ].map((f) => (
               <button
                 key={f.id}
                 type="button"
-                onClick={() => setPresetFilter(f.id as any)}
+                onClick={() => setPresetFilter((f.id === 'preset_all' ? 'all' : f.id.replace('preset_', '')) as any)}
                 className={`px-3 py-1 text-xs font-mono border cursor-pointer transition-colors ${
-                  presetFilter === f.id
+                  presetFilter === (f.id === 'preset_all' ? 'all' : f.id.replace('preset_', ''))
                     ? 'border-[#111111] bg-[#111111] text-white font-bold'
                     : 'border-[#cccccc] bg-white text-[#111111] hover:border-[#111111]'
                 }`}

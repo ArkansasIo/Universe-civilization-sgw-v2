@@ -19,24 +19,24 @@ interface ResearchLibraryViewProps {
   onInstantCompleteResearch?: (queueId: string) => void;
 }
 
-const CATEGORIES: { id: OGameTechCategory | 'all'; label: string; icon: string }[] = [
-  { id: 'all', label: 'All Categories', icon: '✦' },
-  { id: 'energy', label: 'Energy', icon: '⚡' },
-  { id: 'mining', label: 'Mining', icon: '⛏' },
-  { id: 'materials', label: 'Materials', icon: '🧱' },
-  { id: 'computing', label: 'Computing', icon: '💻' },
-  { id: 'physics', label: 'Physics', icon: '⚛' },
-  { id: 'propulsion', label: 'Propulsion', icon: '🚀' },
-  { id: 'weapons', label: 'Weapons', icon: '⚔' },
-  { id: 'shields', label: 'Shields', icon: '🛡' },
-  { id: 'armor', label: 'Armor', icon: '🛡' },
-  { id: 'espionage', label: 'Espionage', icon: '👁' },
-  { id: 'colonization', label: 'Colonization', icon: '🪐' },
-  { id: 'fleet', label: 'Fleet Command', icon: '🛸' },
-  { id: 'ai', label: 'Artificial Intel', icon: '🤖' },
-  { id: 'quantum', label: 'Quantum Tech', icon: '🔬' },
-  { id: 'dimensional', label: 'Dimensional', icon: '🌀' },
-  { id: 'megastructure', label: 'Megastructures', icon: '☀️' },
+const CATEGORIES: { id: string; categoryValue: OGameTechCategory | 'all'; label: string; icon: string }[] = [
+  { id: 'cat_all', categoryValue: 'all', label: 'All Categories', icon: '✦' },
+  { id: 'cat_energy', categoryValue: 'energy', label: 'Energy', icon: '⚡' },
+  { id: 'cat_mining', categoryValue: 'mining', label: 'Mining', icon: '⛏' },
+  { id: 'cat_materials', categoryValue: 'materials', label: 'Materials', icon: '🧱' },
+  { id: 'cat_computing', categoryValue: 'computing', label: 'Computing', icon: '💻' },
+  { id: 'cat_physics', categoryValue: 'physics', label: 'Physics', icon: '⚛' },
+  { id: 'cat_propulsion', categoryValue: 'propulsion', label: 'Propulsion', icon: '🚀' },
+  { id: 'cat_weapons', categoryValue: 'weapons', label: 'Weapons', icon: '⚔' },
+  { id: 'cat_shields', categoryValue: 'shields', label: 'Shields', icon: '🛡' },
+  { id: 'cat_armor', categoryValue: 'armor', label: 'Armor', icon: '🛡' },
+  { id: 'cat_espionage', categoryValue: 'espionage', label: 'Espionage', icon: '👁' },
+  { id: 'cat_colonization', categoryValue: 'colonization', label: 'Colonization', icon: '🪐' },
+  { id: 'cat_fleet', categoryValue: 'fleet', label: 'Fleet Command', icon: '🛸' },
+  { id: 'cat_ai', categoryValue: 'ai', label: 'Artificial Intel', icon: '🤖' },
+  { id: 'cat_quantum', categoryValue: 'quantum', label: 'Quantum Tech', icon: '🔬' },
+  { id: 'cat_dimensional', categoryValue: 'dimensional', label: 'Dimensional', icon: '🌀' },
+  { id: 'cat_megastructure', categoryValue: 'megastructure', label: 'Megastructures', icon: '☀️' },
 ];
 
 const LAB_SPECIALIZATIONS: {
@@ -259,10 +259,10 @@ export const ResearchLibraryView: React.FC<ResearchLibraryViewProps> = ({
                   type="button"
                   onClick={() => {
                     sound.play('click');
-                    setSelectedCategory(cat.id);
+                    setSelectedCategory(cat.categoryValue);
                   }}
                   className={`w-full text-left px-3 py-1.5 text-xs font-mono transition-colors cursor-pointer flex items-center justify-between border ${
-                    selectedCategory === cat.id
+                    selectedCategory === cat.categoryValue
                       ? 'border-[#111111] bg-[#111111] text-white font-bold'
                       : 'border-transparent hover:border-[#cccccc] hover:bg-[#f8fafc] text-[#111111]'
                   }`}
@@ -272,9 +272,9 @@ export const ResearchLibraryView: React.FC<ResearchLibraryViewProps> = ({
                     <span>{cat.label}</span>
                   </span>
                   <span className="text-[10px] opacity-70">
-                    {cat.id === 'all'
+                    {cat.categoryValue === 'all'
                       ? technologies.length
-                      : technologies.filter((t) => t.category === cat.id).length}
+                      : technologies.filter((t) => t.category === cat.categoryValue).length}
                   </span>
                 </button>
               ))}

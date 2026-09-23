@@ -685,7 +685,7 @@ export const INITIAL_BATTLE_PASS_TIERS: BattlePassTier[] = [
 
 export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
   {
-    id: 'title_initiate',
+    id: 'cat_title_initiate',
     name: 'Cadet of the Stars',
     type: 'title',
     rarity: 'rare',
@@ -695,7 +695,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: true,
   },
   {
-    id: 'hologram_orion',
+    id: 'cat_hologram_orion',
     name: 'Starlight Orion Beacon',
     type: 'hologram',
     rarity: 'rare',
@@ -705,7 +705,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'skin_obsidian_cruiser',
+    id: 'cat_skin_obsidian_cruiser',
     name: 'Obsidian Stealth Hull Skin',
     type: 'skin',
     rarity: 'epic',
@@ -715,7 +715,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'avatar_cyborg_admiral',
+    id: 'cat_avatar_cyborg_admiral',
     name: 'Cyborg Fleet Admiral',
     type: 'avatar',
     rarity: 'epic',
@@ -725,7 +725,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'trail_void_plasma',
+    id: 'cat_trail_void_plasma',
     name: 'Void Plasma Engine Glow',
     type: 'engine_trail',
     rarity: 'epic',
@@ -735,7 +735,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'skin_titan_chromatic',
+    id: 'cat_skin_titan_chromatic',
     name: 'Titan Chromatic Aegis',
     type: 'skin',
     rarity: 'legendary',
@@ -745,7 +745,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'title_void_vanguard',
+    id: 'cat_title_void_vanguard',
     name: 'Void Vanguard',
     type: 'title',
     rarity: 'legendary',
@@ -755,7 +755,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'trail_singularity_wake',
+    id: 'cat_trail_singularity_wake',
     name: 'Singularity Hyperspace Wake',
     type: 'engine_trail',
     rarity: 'legendary',
@@ -765,7 +765,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'avatar_ascended_ancient',
+    id: 'cat_avatar_ascended_ancient',
     name: 'Ascended Ancient Luminary',
     type: 'avatar',
     rarity: 'legendary',
@@ -775,7 +775,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'hologram_extinction_core',
+    id: 'cat_hologram_extinction_core',
     name: 'Extinction Core Projection',
     type: 'hologram',
     rarity: 'mythic',
@@ -785,7 +785,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'title_master_hyperspace',
+    id: 'cat_title_master_hyperspace',
     name: 'Master of Hyperspace',
     type: 'title',
     rarity: 'mythic',
@@ -795,7 +795,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'skin_star_eater',
+    id: 'cat_skin_star_eater',
     name: 'Star-Eater Dreadnought Hull',
     type: 'skin',
     rarity: 'mythic',
@@ -805,7 +805,7 @@ export const INITIAL_COSMETICS_CATALOG: CosmeticRewardDetails[] = [
     equipped: false,
   },
   {
-    id: 'skin_primordial_ascension',
+    id: 'cat_skin_primordial_ascension',
     name: 'Primordial Ascension Auric Skin',
     type: 'skin',
     rarity: 'mythic',

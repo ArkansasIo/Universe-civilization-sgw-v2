@@ -1437,7 +1437,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
       activeCrises: [],
       interventionsAvailable: [
         {
-          id: 'int-relief-drop',
+          id: 'int-relief-drop-pl0',
           name: 'Emergency Food & Aquifer Water Relief Airdrop',
           category: 'logistics',
           description: 'Deploy atmospheric cargo lifters to distribute 5,000 Food and 5,000 Water directly to strained urban sectors.',
@@ -1447,7 +1447,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
           cooldownMinutes: 15,
         },
         {
-          id: 'int-welfare-stimulus',
+          id: 'int-welfare-stimulus-pl0',
           name: 'Imperial Welfare Subsidies & Citizens Stimulus',
           category: 'welfare',
           description: 'Disburse 25,000 Naquadah and credits to subsidize healthcare and colonial living standards.',
@@ -1457,7 +1457,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
           cooldownMinutes: 30,
         },
         {
-          id: 'int-peacekeeper-patrol',
+          id: 'int-peacekeeper-patrol-pl0',
           name: 'Colonial Peacekeeper & SGC Security Mobilization',
           category: 'martial',
           description: 'Deploy elite Jaffa and Tau\'ri security cadres to suppress black markets and quell civil unrest.',
@@ -1588,7 +1588,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
       activeCrises: [],
       interventionsAvailable: [
         {
-          id: 'int-relief-drop',
+          id: 'int-relief-drop-pl1',
           name: 'Emergency Food & Aquifer Water Relief Airdrop',
           category: 'logistics',
           description: 'Deploy atmospheric cargo lifters to distribute 5,000 Food and 5,000 Water directly to strained sectors.',
@@ -1734,7 +1734,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
       activeCrises: ['Impending Aquifer Depletion Crisis', 'Solar Radiation Sickness Flare'],
       interventionsAvailable: [
         {
-          id: 'int-relief-drop',
+          id: 'int-relief-drop-pl2',
           name: 'Emergency Food & Aquifer Water Relief Airdrop',
           category: 'logistics',
           description: 'Deploy atmospheric cargo lifters to distribute 5,000 Food and 5,000 Water directly to strained sectors.',
@@ -1744,7 +1744,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
           cooldownMinutes: 15,
         },
         {
-          id: 'int-peacekeeper-patrol',
+          id: 'int-peacekeeper-patrol-pl2',
           name: 'Colonial Peacekeeper & SGC Security Mobilization',
           category: 'martial',
           description: 'Deploy elite Jaffa and Tau\'ri security cadres to suppress black markets and quell civil unrest.',
@@ -1890,7 +1890,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
       activeCrises: ['Severe Famine Risk Alert', 'Impoverished Miner Labor Strike', 'Rapid Aquifer Desiccation'],
       interventionsAvailable: [
         {
-          id: 'int-relief-drop',
+          id: 'int-relief-drop-pl3',
           name: 'Emergency Food & Aquifer Water Relief Airdrop',
           category: 'logistics',
           description: 'Deploy atmospheric cargo lifters to distribute 5,000 Food and 5,000 Water directly to strained sectors.',
@@ -1900,7 +1900,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
           cooldownMinutes: 15,
         },
         {
-          id: 'int-welfare-stimulus',
+          id: 'int-welfare-stimulus-pl3',
           name: 'Imperial Welfare Subsidies & Citizens Stimulus',
           category: 'welfare',
           description: 'Disburse 25,000 Naquadah and credits to subsidize healthcare and colonial living standards.',
@@ -1910,7 +1910,7 @@ export const INITIAL_PLANETS: PlanetColony[] = [
           cooldownMinutes: 30,
         },
         {
-          id: 'int-peacekeeper-patrol',
+          id: 'int-peacekeeper-patrol-pl3',
           name: 'Colonial Peacekeeper & SGC Security Mobilization',
           category: 'martial',
           description: 'Deploy elite Jaffa and Tau\'ri security cadres to suppress black markets and quell civil unrest.',

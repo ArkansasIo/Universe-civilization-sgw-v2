@@ -1088,7 +1088,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
               {[
                 {
-                  id: 'bridge',
+                  id: 'schematic_bridge',
                   name: 'Bridge Command Deck',
                   status: 'Nominal',
                   efficiency: '100%',
@@ -1096,7 +1096,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
                   details: 'Autonomous fleet AI routing and command relays.',
                 },
                 {
-                  id: 'warp_core',
+                  id: 'schematic_warp_core',
                   name: 'Tokamak Antimatter Core',
                   status: 'Nominal',
                   efficiency: '98.5%',
@@ -1104,7 +1104,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
                   details: 'Zero-point plasma generator feeding main spinal batteries.',
                 },
                 {
-                  id: 'spinal_weapon',
+                  id: 'schematic_spinal_weapon',
                   name: 'Spinal Particle Lance',
                   status: lanceChargePct === 100 ? 'Charged' : 'Charging',
                   efficiency: `${lanceChargePct}%`,
@@ -1112,7 +1112,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
                   details: 'Relativistic tachyon beam emitter for capital targets.',
                 },
                 {
-                  id: 'shields',
+                  id: 'schematic_shields',
                   name: 'Phase Deflector Grid',
                   status: 'Active',
                   efficiency: '100%',
@@ -1120,7 +1120,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
                   details: 'Multilayer force barrier deflecting incoming torpedoes.',
                 },
                 {
-                  id: 'hangar',
+                  id: 'schematic_hangar',
                   name: 'Carrier Flight Bays',
                   status: `${totalFighterCount} Craft`,
                   efficiency: 'Active',
@@ -1128,7 +1128,7 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
                   details: '4 automated catapult launch tubes for fighter wings.',
                 },
                 {
-                  id: 'nanite_hull',
+                  id: 'schematic_nanite_hull',
                   name: 'Nanite Hull Carapace',
                   status: 'Repairing',
                   efficiency: '100%',
@@ -1267,21 +1267,21 @@ export const MothershipView: React.FC<MothershipViewProps> = ({
               </div>
               <div className="grid grid-cols-1 gap-2">
                 {[
-                  { id: 'shield_harmonizer', label: 'Phase Shield Harmonizer', desc: '+15% Fleet Shield Buffer & Recharge' },
-                  { id: 'tachyon_link', label: 'Tachyon Targeting Matrix', desc: '+20% Escort Ship Accuracy & Crits' },
-                  { id: 'nanite_repair', label: 'Nanite Hull Dispersion Field', desc: 'Automatic 10% Post-Battle Repair' },
-                  { id: 'slipstream', label: 'Subspace Slipstream Beacon', desc: '-25% Travel Turns & Hyperjump Costs' },
-                  { id: 'annihilation', label: 'Annihilation Critical Salvo', desc: '+25% Flagship Alpha Critical Strike Damage' },
+                  { id: 'aura_shield_harmonizer', value: 'shield_harmonizer', label: 'Phase Shield Harmonizer', desc: '+15% Fleet Shield Buffer & Recharge' },
+                  { id: 'aura_tachyon_link', value: 'tachyon_link', label: 'Tachyon Targeting Matrix', desc: '+20% Escort Ship Accuracy & Crits' },
+                  { id: 'aura_nanite_repair', value: 'nanite_repair', label: 'Nanite Hull Dispersion Field', desc: 'Automatic 10% Post-Battle Repair' },
+                  { id: 'aura_slipstream', value: 'slipstream', label: 'Subspace Slipstream Beacon', desc: '-25% Travel Turns & Hyperjump Costs' },
+                  { id: 'aura_annihilation', value: 'annihilation', label: 'Annihilation Critical Salvo', desc: '+25% Flagship Alpha Critical Strike Damage' },
                 ].map((aura) => (
                   <button
                     key={aura.id}
                     onClick={() => {
                       sound.play('click');
-                      setActiveAura(aura.id);
+                      setActiveAura(aura.value);
                       setFeedback({ type: 'success', text: `Flagship Command Aura set to ${aura.label}.` });
                     }}
                     className={`p-3 text-left border text-xs font-mono transition-colors cursor-pointer ${
-                      activeAura === aura.id
+                      activeAura === aura.value
                         ? 'border-[#111111] bg-[#111111] text-white'
                         : 'border-[#dedede] bg-white text-[#444] hover:bg-[#fafafa]'
                     }`}
