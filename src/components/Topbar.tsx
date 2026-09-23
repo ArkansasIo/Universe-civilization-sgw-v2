@@ -28,6 +28,7 @@ import {
   Flame,
   Sliders,
   Rocket,
+  Palette,
   Wheat,
   Users,
   AlertOctagon,
@@ -125,6 +126,7 @@ const ROUTE_LABELS: Record<string, { section: string; title: string }> = {
   missions: { section: 'CAMPAIGN OPERATIONS', title: 'Story Missions, Galactic Events & Achievements' },
   'galactic-news': { section: 'HOLONET BROADCAST', title: 'Live Galactic News Feed & Holonet Alerts' },
   'codex-doc': { section: 'STRATEGIC CODEX', title: 'In-Game Strategy Codex & Engine Formulas' },
+  'db-theme-manager': { section: 'SYSTEM CONFIGS', title: 'Theme Studio & SQL Database Manager' },
   'account-profiles': { section: 'COMMAND MATRIX', title: 'Commander Character Slots & Profiles' },
   'mmorpg-ogame': { section: 'MMORPG GALAXY HUB', title: 'Guild Raids, Live Chat & Interstellar Bosses' },
   'hyperspace-systems': { section: 'FTL & TITAN PROPULSION', title: 'Hyperspace Drives & Titan Motherships' },
@@ -469,6 +471,20 @@ export const Topbar: React.FC<TopbarProps> = ({
               DEFCON {profile.defconLevel}
             </span>
           </div>
+
+          {/* Theme Studio & SQL Database Switcher Button */}
+          <button
+            type="button"
+            onClick={() => {
+              sound.play('click');
+              onNavigate && onNavigate('db-theme-manager');
+            }}
+            title="Configure White/Navy Dark Themes & SQL Database"
+            className="flex items-center gap-1 px-2.5 py-1 bg-[#111] text-white hover:bg-black border border-[#111] font-mono text-[11px] font-bold uppercase cursor-pointer transition-colors"
+          >
+            <Palette size={11} className="text-sky-400" />
+            <span>🎨 Themes & SQL</span>
+          </button>
 
           {/* Reset Demo State Button */}
           <button

@@ -1,0 +1,38 @@
+/* ==========================================================================
+   UTILITIES SUB-CSS ENGINE: Custom Helpers, Glows, & Animations
+   ========================================================================== */
+
+/* Custom High Contrast Text Glows */
+.text-glow-navy {
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+}
+
+.text-glow-amber {
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+/* Custom Navy Theme Glass Effects */
+.glass-navy {
+  background: rgba(11, 19, 41, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}

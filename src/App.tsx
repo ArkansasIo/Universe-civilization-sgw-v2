@@ -158,6 +158,8 @@ import { DiplomacyView } from './components/views/DiplomacyView';
 import { MissionsView } from './components/views/MissionsView';
 import { GalacticNewsView } from './components/views/GalacticNewsView';
 import { CodexDocumentationView } from './components/views/CodexDocumentationView';
+import { DatabaseThemeManagerView } from './components/views/DatabaseThemeManagerView';
+import { applyThemeToDOM, getActiveThemeId } from './config/themeConfig';
 import { AICSystemView } from './components/views/AICSystemView';
 import { MasterUpgradesView } from './components/views/MasterUpgradesView';
 import { NemesisSystemView } from './components/views/NemesisSystemView';
@@ -276,6 +278,10 @@ export default function App() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(() => sound.isEnabled());
   const [isPatchNotesOpen, setIsPatchNotesOpen] = useState<boolean>(false);
   const [isSaveManagerOpen, setIsSaveManagerOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    applyThemeToDOM(getActiveThemeId());
+  }, []);
 
   // OGame Space Systems State
   const [ogameTechnologies, setOgameTechnologies] = useState<OGameTechnology[]>(() =>
@@ -3245,6 +3251,10 @@ export default function App() {
 
             {activeRoute === 'codex-doc' && (
               <CodexDocumentationView />
+            )}
+
+            {activeRoute === 'db-theme-manager' && (
+              <DatabaseThemeManagerView />
             )}
           </div>
         </main>
